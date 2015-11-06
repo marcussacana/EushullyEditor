@@ -8,7 +8,7 @@ using System.Text;
 using EushullyEditor;
 using System.Windows.Forms;
 
-namespace EushullyEditor
+namespace EEGUI
 {
     public partial class Form1 : Form
     {

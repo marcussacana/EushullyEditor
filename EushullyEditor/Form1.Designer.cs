@@ -1,4 +1,4 @@
-﻿namespace EushullyEditor
+﻿namespace EEGUI
 {
     partial class Form1
     {

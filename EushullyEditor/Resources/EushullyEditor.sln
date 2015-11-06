@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EEGUI", "EushullyEditor\EEGUI.csproj", "{CADE1DE5-5F3D-4506-8FC3-EDE58037AAE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EushullyEditor", "EushullyTranslator\EushullyEditor.csproj", "{FBCDF704-DDD5-43FE-BB18-4A058C6B4914}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CADE1DE5-5F3D-4506-8FC3-EDE58037AAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CADE1DE5-5F3D-4506-8FC3-EDE58037AAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CADE1DE5-5F3D-4506-8FC3-EDE58037AAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CADE1DE5-5F3D-4506-8FC3-EDE58037AAE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBCDF704-DDD5-43FE-BB18-4A058C6B4914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBCDF704-DDD5-43FE-BB18-4A058C6B4914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBCDF704-DDD5-43FE-BB18-4A058C6B4914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBCDF704-DDD5-43FE-BB18-4A058C6B4914}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
