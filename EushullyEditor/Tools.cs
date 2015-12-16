@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace EushullyEditor
+namespace VNX.EushullyEditor
 { 
     class Tools
     {
@@ -174,6 +174,10 @@ namespace EushullyEditor
             byte[] str = StringToByteArray(hex);
             Encoding encoder = Encoding.GetEncoding(932);
             return encoder.GetString(str);
+        }
+        public static string SJByteArrayToString(byte[] hex)
+        {
+            return SJHexToString(ByteArrayToString(hex).Split('-'));
         }
         public static string[] SJStringToHex(string text)
         {

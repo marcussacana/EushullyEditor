@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using EushullyEditor;
+using VNX.EushullyEditor;
 using System.Windows.Forms;
 
 namespace EEGUI
@@ -16,22 +16,22 @@ namespace EEGUI
         {
             InitializeComponent();
         }
-
-        EushullyBinary EB = new EushullyBinary();
+        EushullyEditor EE;
+        Resources RES = new Resources { RemoveBreakLine = false, Monospaced = true, MonospacedLengthLimit = 63}; //Kamidori Configuration
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog fd = new OpenFileDialog();
             fd.Filter = "All Bin files | *.bin";
             DialogResult dr = fd.ShowDialog();
+
             if (dr == DialogResult.OK)
             {
-                EB.Config = new FormatOptions();
-                EB.LoadScript(System.IO.File.ReadAllBytes(fd.FileName));
+                EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions()); //Initializate with default configuration
+                EE.LoadScript();
                 listBox1.Items.Clear();
-                foreach (DialogueScript DS in EB.DialogSripts)
-                {
-                    listBox1.Items.Add(DS.Dialogue.Replace("\n", "\\n"));
-                }
+                foreach (VNX.EushullyEditor.String str in EE.Strings)
+                    listBox1.Items.Add(str.getString());
+
             }
         }
         public int index;
@@ -40,7 +40,8 @@ namespace EEGUI
             try
             {
                 index = listBox1.SelectedIndex;
-                textBox1.Text = EB.DialogSripts[index].Dialogue.Replace("\n", "\\n");
+                //                     GET TEXT WITH FAKE BREAK LINE
+                textBox1.Text = RES.GetFakedBreakLineText(listBox1.Items[index].ToString().Replace("\\n", "\n")).Replace("\n", "\\n");
             }
             catch { }
         }
@@ -49,7 +50,8 @@ namespace EEGUI
         {
             if (e.KeyChar == '\n' || e.KeyChar == '\r')
             {
-                EB.DialogSripts[index].Dialogue = textBox1.Text.Replace("\\n", "\n");
+                //                               SAVE TEXT WUTG FAKE BREAK LINE
+                EE.Strings[index].setString(RES.FakeBreakLine(textBox1.Text.Replace("\\n", "\n")));
                 listBox1.Items[index] = textBox1.Text;
             }
         }
@@ -61,7 +63,7 @@ namespace EEGUI
             DialogResult dr = fd.ShowDialog();
             if (dr == DialogResult.OK)
             {
-                System.IO.File.WriteAllBytes(fd.FileName, EB.ExportScript());
+                System.IO.File.WriteAllBytes(fd.FileName, EE.Export());
             }
         }
     }

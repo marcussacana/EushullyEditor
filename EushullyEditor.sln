@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EEGUI", "EushullyEditor\EEGUI.csproj", "{CADE1DE5-5F3D-4506-8FC3-EDE58037AAE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EEGUI", "EEGUI\EEGUI.csproj", "{CADE1DE5-5F3D-4506-8FC3-EDE58037AAE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EushullyEditor", "EushullyTranslator\EushullyEditor.csproj", "{FBCDF704-DDD5-43FE-BB18-4A058C6B4914}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EushullyEditor", "EushullyEditor\EushullyEditor.csproj", "{FBCDF704-DDD5-43FE-BB18-4A058C6B4914}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
