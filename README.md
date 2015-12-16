@@ -1,10 +1,16 @@
-# EushullyEditor
-EuhullyEditor Library, a tool to make your own Eushully script editor easy
+##EushullyEditor
+EuhullyEditor Library, A Tool to make your own Eushully Script Editor without problems
 
-#BETA VERSION
-This is my first version, i test with kamidori, and work, if don't work with your game, try contact-me or you configure the tool to your script format.
-This version can't have all resources working, i'm analyzing the Eusshully format for now, i need know more about scripts to write a tool with support to add new breakline or remove.
+###Features:<br>
+-Rewrite All kamidori strings (Overwrite)<br>
+-Append strings to end of the file to bad configurations (Append)<br>
+-Rewrite strings without changing unknow offsets (AutoDetect)<br><br>
+###Aditional Features:<br>
+-Make Fake line breaks (configured to work with kamidori)<br>
+-Get Faked Line breaks original strings
 
-Strings it's separed with the char '|' you can't remove this, the script have more than 1 strings in a single dialog, and to the program know how rewrite that string, need separe with '|'
+###YOU NEED CONFIGURE
+I Configure to work without problems with the Kamidori
+If you don't know how to configure, you can try contact-me to help
 
 Good Lucky
