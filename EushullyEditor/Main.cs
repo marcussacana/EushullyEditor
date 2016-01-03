@@ -15,13 +15,12 @@ namespace VNX.EushullyEditor
         public string ScriptVersion { get; internal set; }
         public string Status { get; internal set; }
         internal  int[] OffsetsIndexs;
-        /// <summary>
-        /// StringTablePoint[0] = Start String Table Position; StringTablePoint[1] = End String Table Position.
-        /// </summary>
+        //StringTablePoint[0] = Start String Table Position; StringTablePoint[1] = End String Table Position.
         internal int[] StringTablePoint = new int[] { 0, 0 };
         internal FormatOptions Config;
         internal byte[] Script;
         internal byte[] AppendSig = new byte[] { 0x00, 0x45, 0x64, 0x69, 0x74, 0x65, 0x64, 0x20, 0x57, 0x69, 0x74, 0x68, 0x20, 0x45, 0x75, 0x73, 0x68, 0x75, 0x6C, 0x6C, 0x79, 0x54, 0x72, 0x61, 0x6E, 0x73, 0x6C, 0x61, 0x74, 0x6F, 0x72, 0x00 };
+        
         /// <summary>
         /// Initialize the script editor
         /// </summary>
@@ -43,7 +42,8 @@ namespace VNX.EushullyEditor
             object[] Entries = Config.StringEntries;
             int StringStart = Script.Length;
             int StringEnd = 0;
-            if (Config.BruteValidator && Config.SaveMethod == WriteMethod.Append)//A make this method to allow edit script without perfect configuration of my tool, and i make the BruteValidator to confirm the format configuration
+            //A make this method to allow edit script without perfect configuration of my tool, and i make the BruteValidator to confirm the format configuration
+            if (Config.BruteValidator && Config.SaveMethod == WriteMethod.Append)
                 throw new Exception("You can't use the Script Validator in using Append Write Mode");
             if (Config.ClearedContent.Length != 4)
                 throw new Exception("The op code to cleared string need have 4 bytes length");
@@ -198,6 +198,7 @@ namespace VNX.EushullyEditor
                 }
             }
             byte[] OutScript = new byte[0];
+            Status = "Generating Script...";
             switch (Config.SaveMethod)
             {
                 case WriteMethod.Append:
@@ -217,6 +218,10 @@ namespace VNX.EushullyEditor
                         offset.CopyTo(OutScript, Strings[i].OffsetPos);
                     }
                     break;
+
+                case WriteMethod.Overwrite:
+                    NewStartPosition = StringTablePoint[0];
+                    goto case WriteMethod.AutoDetect;
                 case WriteMethod.AutoDetect:
                     byte[] ScriptDump = new byte[NewStartPosition];
                     for (int i = 0; i < ScriptDump.Length; i++)
@@ -239,41 +244,12 @@ namespace VNX.EushullyEditor
                         int off = (Tools.GetDWOffset(Script, Config.OffsetsToSeek[i]) * 4) + Config.HeaderSize;
                         int Diff = OutScript.Length - Script.Length;
                         if (off < ScriptDump.Length)
-                            continue;//if the is a opcode pointer, don't need update...
+                            continue;//If the offset points to a position beyond the strings, then there was no change on the offset, so it's unnecessary to update it
                         off += Diff;
                         byte[] offset = Tools.GenDWOffet((off-Config.HeaderSize)/4);
                         offset.CopyTo(OutScript, Config.OffsetsToSeek[i]);
                     }
-                    break;
-                case WriteMethod.Overwrite:
-                    NewStartPosition = StringTablePoint[0];
-                    byte[] data = new byte[NewStartPosition];
-                    for (int i = 0; i < data.Length; i++)
-                        data[i] = Script[i];
-                    byte[] Sufix = new byte[Script.Length - StringTablePoint[1]];
-                    for (int i = 0; i < Sufix.Length; i++)
-                        Sufix[i] = Script[i + StringTablePoint[1]];
-                    OutScript = new byte[data.Length + StringTable.Length + Sufix.Length];
-                    data.CopyTo(OutScript, 0);
-                    StringTable.CopyTo(OutScript, data.Length);
-                    Sufix.CopyTo(OutScript, data.Length + StringTable.Length);
-                    for (int i = 0; i < TableTree.Length; i++)
-                    {
-                        int NewStrPos = TableTree[i] + NewStartPosition;
-                        byte[] offset = Tools.GenDWOffet((NewStrPos - Config.HeaderSize) / 4);
-                        offset.CopyTo(OutScript, Strings[i].OffsetPos);
-                    }
-                    for (int i = 0; i < Config.OffsetsToSeek.Length; i++)
-                    {
-                        int off = (Tools.GetDWOffset(Script, Config.OffsetsToSeek[i]) * 4) + Config.HeaderSize;
-                        int Diff = OutScript.Length - Script.Length;
-                        if (off < data.Length)
-                            continue;//if the is a opcode pointer, don't need update...
-                        off += Diff;
-                        byte[] offset = Tools.GenDWOffet((off - Config.HeaderSize) / 4);
-                        offset.CopyTo(OutScript, Config.OffsetsToSeek[i]);
-                    }
-                    break;
+                    break;                   
             }
             Script = Backup;
             return OutScript;
@@ -420,31 +396,33 @@ namespace VNX.EushullyEditor
     public class FormatOptions
     {
         /// <summary>
-        /// Some scripts have a offset in the header, you can list offsets position and method to seek the new position,
-        /// use "new int[] { OffsetIndex1, OffsetIndex2, OffsetIndex2};
+        /// Header offsets do update after resize the script.
         /// </summary>
         public int[] OffsetsToSeek = new int[] { 0x28, 0x30, 0x38 };
 
         /// <summary>
-        /// All offsets have a prefix, this 
+        /// All offsets have a dword prefix, set this prefix here.
         /// </summary>
         public byte[] OffsetOPCode = new byte[] { 0x02, 0x00, 0x00, 0x00 };
+
         /// <summary>
         /// After Load the script remove all strings the program can find for don't removed strings,
         /// if found, he crash logging the reason (Recommended)
         /// </summary>
         public bool BruteValidator = false;
+
         /// <summary>
-        /// Change the save method using this variable
+        /// Select how you like regenerate the script here.
         /// </summary>
         public WriteMethod SaveMethod = WriteMethod.Overwrite;
+
         /// <summary>
         /// The Script Header Size
         /// </summary>
         public int HeaderSize = 0x3C;
+
         /// <summary>
-        /// Use a Collection of byte array to find at the file,
-        /// use "new object[] {new object[] {}, new object[] {}, ...}"
+        /// Use a Collection of byte array to represent a string OpCode in the Script,
         /// 0x00 at 0xFF it's valid values, (Byte.any = *) (Byte.offset position in op code)
         /// </summary>
         public object[] StringEntries = new object[] {
@@ -460,17 +438,20 @@ namespace VNX.EushullyEditor
             { 0x92, 0x01, 0x00, 0x00, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, 0x02, 0x00, 0x00, 0x00, Byte.offset } };
         
         /// <summary>
-        /// The XOR Strings key (to decrypt), Kamidori key it's 0xFF (255)
+        /// The XOR Strings key (to decrypt), Default key it's 0xFF (255)
         /// </summary>
         public byte[] Key = new byte[] { 0xFF };
 
 
         /// <summary>
-        /// On you use WriteMethod.Append, the old strings don't change, but for allow a more compressed scripts if you zip, you can null all strings data.
+        /// Replace old strings to a Custom Command (only make affect in decompilers)
         /// </summary>
         public bool ClearOldStrings = true;
-        public byte[] ClearedContent = new byte[] { 0x02, 0x00, 0x00, 0x00 };
-        public byte[] TablePrefix = new byte[] { 0x05, 0x00, 0x00, 0x00 };
+
+        /// <summary>
+        /// Set here the OpCode to replace on the old string location.
+        /// </summary>
+        public byte[] ClearedContent = new byte[] { 0x02, 0x00, 0x00, 0x00 }; //02 00 00 00 = Exit/Return Command       
 
     }
     public enum Byte { 
