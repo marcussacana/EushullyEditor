@@ -1,16 +1,17 @@
-##EushullyEditor
-EuhullyEditor Library, A Tool to make your own Eushully Script Editor without problems
+## EushullyEditor
+EushullyEditor Library is a tool to make your own Eushully Script Editor.
 
-###Features:<br>
--Rewrite All kamidori strings (Overwrite)<br>
--Append strings to end of the file to bad configurations (Append)<br>
--Rewrite strings without changing unknow offsets (AutoDetect)<br><br>
-###Aditional Features:<br>
--Make Fake line breaks (configured to work with kamidori)<br>
--Get Faked Line breaks original strings
+### Features
+- **Overwrite**: Rewrite all Kamidori strings.
+- **Append**: Move recognized strings to the end of the script to avoid bad configurations.
+- **AutoDetect**: Rewrite strings without changing unknown offsets.
 
-###YOU NEED CONFIGURE
-I Configure to work without problems with the Kamidori
-If you don't know how to configure, you can try contact-me to help
+### Aditional Features
+- Make Fake line breaks (configured to work with Kamidori)<br>
+- Get Faked Line breaks original strings
 
-Good Lucky
+### YOU NEED TO CONFIGURE IT!
+I configured it to work with Kamidori. If you don't know how to configure it, you can try
+contacting me and asking for help.
+
+Good luck.
