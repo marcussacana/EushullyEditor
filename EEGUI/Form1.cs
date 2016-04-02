@@ -42,6 +42,7 @@ namespace EEGUI
                 index = listBox1.SelectedIndex;
                 //                     GET TEXT WITH FAKE BREAK LINE
                 textBox1.Text = RES.GetFakedBreakLineText(listBox1.Items[index].ToString().Replace("\\n", "\n")).Replace("\n", "\\n");
+                textBox1 = RES.AutoLigth(textBox1);
             }
             catch { }
         }
@@ -64,6 +65,24 @@ namespace EEGUI
             if (dr == DialogResult.OK)
             {
                 System.IO.File.WriteAllBytes(fd.FileName, EE.Export());
+            }
+        }
+
+        private void openReadOnlyToolStripMenuItem_Click(object sender, EventArgs e) {
+            
+            OpenFileDialog fd = new OpenFileDialog();
+            fd.Filter = "All Bin files | *.bin";
+            DialogResult dr = fd.ShowDialog();
+
+            if (dr == DialogResult.OK) {
+                MessageBox.Show("You are using Read-Only Mode", "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions()); //Initializate with default configuration
+                EE.LoadScript();
+                listBox1.Items.Clear();
+                EE.Strings = RES.MergeStrings(EE);
+                foreach (VNX.EushullyEditor.String str in EE.Strings)
+                    listBox1.Items.Add(str.getString());
+
             }
         }
     }
