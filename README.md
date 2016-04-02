@@ -9,7 +9,7 @@ EushullyEditor Library is a tool to make your own Eushully Script Editor.
 ### Aditional Features
 - Make Fake line breaks (configured to work with Kamidori)<br>
 - Get Faked Line breaks original strings
-- Read-Only Mode to make japanese strings readable sample: http://i.imgur.com/TMoGABr.jpg
+- Read-Only Mode to make japanese strings readable. sample: http://i.imgur.com/TMoGABr.jpg
 
 
 ### YOU NEED TO CONFIGURE IT!
