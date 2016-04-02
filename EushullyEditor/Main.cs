@@ -487,7 +487,7 @@ namespace VNX.EushullyEditor {
         public bool Monospaced;
         public int MonospacedLengthLimit;
         public string FakeBreakLine(string text) {
-            text = text.Replace("ー", "");
+            text = text.Replace("-----", "");
             if (!Monospaced) {
                 if (font == null || TextArea == null)
                     throw new Exception("You need configure game text information before use this resource.");
@@ -537,7 +537,7 @@ namespace VNX.EushullyEditor {
         }
 
         public string GetFakedBreakLineText(string text) {
-            text = text.Replace("", "ー");
+            text = text.Replace("", "-----");
             string[] lines = text.Split('\n');
             if (lines.Length > 1) {
                 for (int i = 0; i < lines.Length; i++) {
