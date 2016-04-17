@@ -19,7 +19,7 @@ contacting me and asking for help.
 Good luck.
 
 #### Release Resources:
-- Hide Eushully Erros: https://github.com/guquabc/eushullyNoMsgBox
+- Hide Eushully Error: https://github.com/guquabc/eushullyNoMsgBox
 
 
 ### Usage:
