@@ -48,3 +48,4 @@ Good luck.
     System.IO.File.WriteAllBytes(@"C:\sample-out.bin", OutScript); //save the sciprt
 
 
+####Tested With: Kamidori and Kami no Rhapsody
