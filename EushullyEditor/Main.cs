@@ -55,6 +55,8 @@ namespace VNX.EushullyEditor {
                         //Update String Table Start
                         foreach (int off in offset) {
                             int StringOffset = (Tools.GetDWOffset(Script, off) * 4) + Config.HeaderSize;
+                            if (StringOffset < Config.HeaderSize || !CheckStr(StringOffset, Script))
+                                goto ignore;
                             if (StringOffset < StringStart)
                                 StringStart = StringOffset;
                             if (StringOffset > StringEnd)
@@ -67,6 +69,8 @@ namespace VNX.EushullyEditor {
                         position += ((object[])Entry).Length - 4 + disc;
                         break;
                     }
+                ignore:
+                    ;
                 }
             }
             Status = "Working...";
@@ -96,6 +100,17 @@ namespace VNX.EushullyEditor {
             }
             Status = "Initialized";
         }
+
+        private bool CheckStr(int stringOffset, byte[] script) {
+            for (int i = stringOffset; i < stringOffset + 300 && i < script.Length; i++) {
+                if (script[i] == 0x00)
+                    return false;
+                if (script[i] == RXOR(0x00) && script[i] == RXOR(0x00))
+                    return true;
+            }
+            return false;
+        }
+
         public byte[] Export() {
             byte[] Backup = new byte[Script.Length];
             Script.CopyTo(Backup, 0);
@@ -115,7 +130,7 @@ namespace VNX.EushullyEditor {
                 for (int i = 0; i < OffsetsIndexs.Length; i++) {
                     int Position = (Tools.GetDWOffset(Script, OffsetsIndexs[i]) * 4) + Config.HeaderSize;
                     int length = 0;
-                    while (!(RXOR(Script[Position + 1]) == 0x00 && RXOR(Script[Position]) == 0x00)) {
+                    while (!(RXOR(Script[Position]) == 0x00 && RXOR(Script[Position + 1]) == 0x00)) {
                         length++;
                         Position++;
                     }
