@@ -12,12 +12,14 @@ namespace EEGUI
 {
     public partial class Form1 : Form
     {
-        public Form1()
-        {
+        public Form1() {
+            //Kamidori Configuration
+            Resources.RemoveBreakLine = false;
+            Resources.Monospaced = true;
+            Resources.MonospacedLengthLimit = 63;
             InitializeComponent();
         }
         EushullyEditor EE;
-        Resources RES = new Resources { RemoveBreakLine = false, Monospaced = true, MonospacedLengthLimit = 63}; //Kamidori Configuration
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog fd = new OpenFileDialog();
@@ -41,8 +43,8 @@ namespace EEGUI
             {
                 index = listBox1.SelectedIndex;
                 //                     GET TEXT WITH FAKE BREAK LINE
-                textBox1.Text = RES.GetFakedBreakLineText(listBox1.Items[index].ToString().Replace("\\n", "\n")).Replace("\n", "\\n");
-                textBox1 = RES.AutoLigth(textBox1);
+                textBox1.Text = Resources.GetFakedBreakLineText(listBox1.Items[index].ToString().Replace("\\n", "\n")).Replace("\n", "\\n");
+                textBox1 = Resources.AutoLigth(textBox1);
             }
             catch { }
         }
@@ -52,7 +54,7 @@ namespace EEGUI
             if (e.KeyChar == '\n' || e.KeyChar == '\r')
             {
                 //                               SAVE TEXT WUTG FAKE BREAK LINE
-                EE.Strings[index].setString(RES.FakeBreakLine(textBox1.Text.Replace("\\n", "\n")));
+                EE.Strings[index].setString(Resources.FakeBreakLine(textBox1.Text.Replace("\\n", "\n")));
                 listBox1.Items[index] = textBox1.Text;
             }
         }
@@ -79,7 +81,7 @@ namespace EEGUI
                 EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions()); //Initializate with default configuration
                 EE.LoadScript();
                 listBox1.Items.Clear();
-                EE.Strings = RES.MergeStrings(EE);
+                EE.Strings = Resources.MergeStrings(ref EE, true);
                 foreach (VNX.EushullyEditor.String str in EE.Strings)
                     listBox1.Items.Add(str.getString());
 
