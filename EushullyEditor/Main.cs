@@ -40,8 +40,6 @@ namespace VNX.EushullyEditor {
             int StringStart = Script.Length;
             int StringEnd = 0;
             //A make this method to allow edit script without perfect configuration of my tool, and i make the BruteValidator to confirm the format configuration
-            if (Config.BruteValidator && Config.SaveMethod == WriteMethod.Append)
-                throw new Exception("You can't use the Script Validator in using Append Write Mode");
             if (Config.ClearedContent.Length != 4)
                 throw new Exception("The op code to cleared string need have 4 bytes length");
             for (int position = Config.HeaderSize; position < StringStart; position += 4) {
@@ -397,7 +395,7 @@ namespace VNX.EushullyEditor {
         /// <summary>
         /// Select how you like regenerate the script here.
         /// </summary>
-        public WriteMethod SaveMethod = WriteMethod.Overwrite;
+        public WriteMethod SaveMethod = WriteMethod.Append;
 
         /// <summary>
         /// The Script Header Size

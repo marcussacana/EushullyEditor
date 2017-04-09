@@ -17,7 +17,9 @@ namespace EEGUI
             Resources.RemoveBreakLine = false;
             Resources.Monospaced = true;
             Resources.MonospacedLengthLimit = 63;
+
             InitializeComponent();
+
         }
         EushullyEditor EE;
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -28,8 +30,15 @@ namespace EEGUI
 
             if (dr == DialogResult.OK)
             {
-                EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions()); //Initializate with default configuration
+                //EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions()); //Initializate with default configuration
+                EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions() {
+                    ClearOldStrings = true,
+                    BruteValidator = true
+                });
                 EE.LoadScript();
+
+                Text = "Eusshuly Script - v" + EE.ScriptVersion;
+
                 listBox1.Items.Clear();
                 foreach (VNX.EushullyEditor.String str in EE.Strings)
                     listBox1.Items.Add(str.getString());
@@ -53,7 +62,7 @@ namespace EEGUI
         {
             if (e.KeyChar == '\n' || e.KeyChar == '\r')
             {
-                //                               SAVE TEXT WUTG FAKE BREAK LINE
+                //                               SAVE TEXT WITH FAKE BREAK LINE
                 EE.Strings[index].setString(Resources.FakeBreakLine(textBox1.Text.Replace("\\n", "\n")));
                 listBox1.Items[index] = textBox1.Text;
             }
