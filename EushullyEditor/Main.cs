@@ -72,6 +72,8 @@ namespace VNX.EushullyEditor {
                 }
             }
             Status = "Working...";
+            if (StringStart == Script.Length)
+                return;
             StringEnd++;
             bool Ended = false;
             while (!Ended || StringEnd % 4 != 0) {
@@ -255,7 +257,10 @@ namespace VNX.EushullyEditor {
                     }
                 }
                 else {
-                    if ((byte)(int)Entry[i] != Script[position + i + disc]) {
+                    int pos = position + i + disc;
+                    if (pos >= Script.Length)
+                        return false;
+                    if ((byte)(int)Entry[i] != Script[pos]) {
                         return false;
                     }
                 }
@@ -416,7 +421,9 @@ namespace VNX.EushullyEditor {
             new object[] //Unknow function with string entry
             { 0x40, 0x01, 0x00, 0x00, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, 0x02, 0x00, 0x00, 0x00 , Byte.offset, 0x02, 0x00, 0x00, 0x00, Byte.offset , Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any },
             new object[] //set-string string entry
-            { 0x92, 0x01, 0x00, 0x00, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, 0x02, 0x00, 0x00, 0x00, Byte.offset } };
+            { 0x92, 0x01, 0x00, 0x00, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, Byte.any, 0x02, 0x00, 0x00, 0x00, Byte.offset },
+            new object[] //Unk string entry
+            { 0xFE, 0x07, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, Byte.offset } };
 
         /// <summary>
         /// The XOR Strings key (to decrypt), Default key it's 0xFF (255)
