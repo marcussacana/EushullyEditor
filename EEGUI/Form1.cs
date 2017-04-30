@@ -51,7 +51,7 @@ namespace EEGUI
             try
             {
                 index = listBox1.SelectedIndex;
-                //                     GET TEXT WITH FAKE BREAK LINE
+                //GET TEXT WITH FAKE BREAK LINE
                 textBox1.Text = Resources.GetFakedBreakLineText(listBox1.Items[index].ToString().Replace("\\n", "\n")).Replace("\n", "\\n");
                 textBox1 = Resources.AutoLigth(textBox1);
             }
@@ -62,7 +62,7 @@ namespace EEGUI
         {
             if (e.KeyChar == '\n' || e.KeyChar == '\r')
             {
-                //                               SAVE TEXT WITH FAKE BREAK LINE
+                //SAVE TEXT WITH FAKE BREAK LINE
                 EE.Strings[index].setString(Resources.FakeBreakLine(textBox1.Text.Replace("\\n", "\n")));
                 listBox1.Items[index] = textBox1.Text;
             }

@@ -116,7 +116,7 @@ namespace VNX.EushullyEditor {
         public static object _EndLine = new object[] { 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
         //Return In-Game Text, but make the script Read-Only.
-        public static String[] MergeStrings(ref EushullyEditor WorkSpace, bool DeectOnly) {
+        public static String[] MergeStrings(ref EushullyEditor WorkSpace, bool DetectOnly) {
             String[] Input = WorkSpace.Strings;
             String[] Result = new String[Input.Length];
             Input.CopyTo(Result, 0);
@@ -136,7 +136,7 @@ namespace VNX.EushullyEditor {
             }
             WorkSpace.Strings = Input;
             bool Ck = false;
-            if (!DeectOnly)
+            if (!DetectOnly)
                 for (int main = 0, i = 1; i < Result.Length; i++) {
                     String Main = Result[main];
 
