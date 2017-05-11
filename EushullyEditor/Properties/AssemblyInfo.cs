@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EushullyEditor BETA")]
-[assembly: AssemblyDescription("A Easy Eushully script manager library")]
+[assembly: AssemblyTitle("EushullyEditor")]
+[assembly: AssemblyDescription("A Easy Eushully Script Translator")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VNX+")]
 [assembly: AssemblyProduct("EushullyEditor")]
-[assembly: AssemblyCopyright("Copyright © VNX+ 2015-2016")]
+[assembly: AssemblyCopyright("Copyright © VNX+ 2015-2017")]
 [assembly: AssemblyTrademark("VNX+")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.7.0")]
-[assembly: AssemblyFileVersion("2.29.4.2017")]
+[assembly: AssemblyVersion("3.0.7.0")]
+[assembly: AssemblyFileVersion("3.37.5.2017")]

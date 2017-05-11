@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VNX.EushullyEditor
+namespace EushullyEditor
 { 
     class Tools
     {      

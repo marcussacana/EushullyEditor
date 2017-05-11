@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace VNX.EushullyEditor {
+namespace EushullyEditor {
 
     /// <summary>
-    /// Opitional Resources to make a fake brekline using the text length...
+    /// Extra Resources, Not Recommended.
     /// </summary>
     public static class Resources {
         public static System.Drawing.Font font;
@@ -116,8 +116,8 @@ namespace VNX.EushullyEditor {
         public static object _EndLine = new object[] { 0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
         //Return In-Game Text, but make the script Read-Only.
-        public static String[] MergeStrings(ref EushullyEditor WorkSpace, bool DetectOnly) {
-            String[] Input = WorkSpace.Strings;
+        public static String[] MergeStrings(ref BinEditor WorkSpace, bool DetectOnly) {
+            String[] Input = WorkSpace.StringsInfo;
             String[] Result = new String[Input.Length];
             Input.CopyTo(Result, 0);
             //Step 1 - Detect Op Codes
@@ -134,7 +134,7 @@ namespace VNX.EushullyEditor {
 
                 }
             }
-            WorkSpace.Strings = Input;
+            WorkSpace.StringsInfo = Input;
             bool Ck = false;
             if (!DetectOnly)
                 for (int main = 0, i = 1; i < Result.Length; i++) {
@@ -145,22 +145,22 @@ namespace VNX.EushullyEditor {
                         if (Next.Furigana || (!Ck && Main.Furigana)) {
                             if (!Ck && Main.Furigana) {
                                 Ck = true;
-                                Main.STR = "[" + Main.STR + "/" + Next.STR + "]";
-                                Next.STR = "";
+                                Main.Content = "[" + Main.Content + "/" + Next.Content + "]";
+                                Next.Content = "";
                             }
                             else {
-                                Main.STR += "[" + Next.STR + "/" + Result[i + 1].STR + "]";
-                                Next.STR = "";
-                                Result[i + 1].STR = "";
+                                Main.Content += "[" + Next.Content + "/" + Result[i + 1].Content + "]";
+                                Next.Content = "";
+                                Result[i + 1].Content = "";
                                 i++;
                             }
                             continue;
                         }
                         else {
-                            Main.STR += Next.STR;
-                            Next.STR = "";
+                            Main.Content += Next.Content;
+                            Next.Content = "";
                             if (Next.EndLine)
-                                Main.STR += "\\n";
+                                Main.Content += "\\n";
                             if (Next.EndText) {
                                 main = i + 1;
                                 Ck = false;
@@ -172,14 +172,14 @@ namespace VNX.EushullyEditor {
                 }
             return Result;
         }
-        private static int FindEnd(EushullyEditor WorkSpace, int At, object[] Mask) {
+        private static int FindEnd(BinEditor WorkSpace, int At, object[] Mask) {
             byte[] script = WorkSpace.Script;
             int disc = 0;
             int StartOpCode = 0;
             for (int i = 0; i < Mask.Length; i++) {
                 object entry = Mask[i];
                 if (entry is Byte)
-                    if ((Byte)entry == Byte.offset) {
+                    if ((Byte)entry == Byte.Offset) {
                         disc += 3;
                         int ig;
                         int[] ign;

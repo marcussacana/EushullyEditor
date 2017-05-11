@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using VNX.EushullyEditor;
+using EushullyEditor;
 using System.Windows.Forms;
 
 namespace EEGUI
@@ -21,7 +21,7 @@ namespace EEGUI
             InitializeComponent();
 
         }
-        EushullyEditor EE;
+        BinEditor Editor;
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog fd = new OpenFileDialog();
@@ -31,17 +31,16 @@ namespace EEGUI
             if (dr == DialogResult.OK)
             {
                 //EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions()); //Initializate with default configuration
-                EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions() {
+                Editor = new BinEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions() {
                     ClearOldStrings = true,
                     BruteValidator = true
                 });
-                EE.LoadScript();
 
-                Text = "Eusshuly Script - v" + EE.ScriptVersion;
+                Text = "Eusshuly Script - v" + Editor.ScriptVersion;
 
                 listBox1.Items.Clear();
-                foreach (VNX.EushullyEditor.String str in EE.Strings)
-                    listBox1.Items.Add(str.getString());
+                foreach (string str in Editor.Import())
+                    listBox1.Items.Add(str);
 
             }
         }
@@ -63,7 +62,7 @@ namespace EEGUI
             if (e.KeyChar == '\n' || e.KeyChar == '\r')
             {
                 //SAVE TEXT WITH FAKE BREAK LINE
-                EE.Strings[index].setString(Resources.FakeBreakLine(textBox1.Text.Replace("\\n", "\n")));
+                Editor.StringsInfo[index].Content = (Resources.FakeBreakLine(textBox1.Text.Replace("\\n", "\n")));
                 listBox1.Items[index] = textBox1.Text;
             }
         }
@@ -75,7 +74,7 @@ namespace EEGUI
             DialogResult dr = fd.ShowDialog();
             if (dr == DialogResult.OK)
             {
-                System.IO.File.WriteAllBytes(fd.FileName, EE.Export());
+                System.IO.File.WriteAllBytes(fd.FileName, Editor.Export());
             }
         }
 
@@ -87,12 +86,12 @@ namespace EEGUI
 
             if (dr == DialogResult.OK) {
                 MessageBox.Show("You are using Read-Only Mode", "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                EE = new EushullyEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions()); //Initializate with default configuration
-                EE.LoadScript();
+                Editor = new BinEditor(System.IO.File.ReadAllBytes(fd.FileName), new FormatOptions()); //Initializate with default configuration
+                Editor.Import();
                 listBox1.Items.Clear();
-                EE.Strings = Resources.MergeStrings(ref EE, true);
-                foreach (VNX.EushullyEditor.String str in EE.Strings)
-                    listBox1.Items.Add(str.getString());
+                Editor.StringsInfo = Resources.MergeStrings(ref Editor, true);
+                foreach (EushullyEditor.String str in Editor.StringsInfo)
+                    listBox1.Items.Add(str.Content);
 
             }
         }
