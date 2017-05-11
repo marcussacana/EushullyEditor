@@ -18,19 +18,18 @@ Good luck.
 
 ### Usage:
 
-```
+```csharp
     //To Load
-    using VNX.EushullyEditor;
+    using EushullyEditor;
     //...
     FormatOptions Config = new FormatOptions(); //Start with default config
-    EushullyEditor Editor = new EushullyEditor(File.ReadAllBytes("C:\\Script.bin"));
+    BinEditor Editor = new BinEditor(File.ReadAllBytes("C:\\Script.bin"));
     string[] AllStrings = Editor.Import(); //Create Variable with all entries
     
     //...
     
     //To Save	
-    byte[] OutScript = Editor.Export(AllStrings); //Get script with new strings
-    System.IO.File.WriteAllBytes(@"C:\sample-out.bin", OutScript); //save the script
+    System.IO.File.WriteAllBytes(@"C:\sample-out.bin",  Editor.Export(AllStrings));
 ```
 
 ####Tested With: Kamidori and Kami no Rhapsody
